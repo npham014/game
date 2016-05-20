@@ -13,11 +13,15 @@ context.strokeStyle="white";
 context.strokeRect(50,400,962,135);
 context.stroke();
 
+
+
 context.font = "30px Arial";
 context.fillStyle = "white";
+//context.textAlign = "center";
 context.fillText("Choose a Class", 425, 100);
 context.fillText("Warrior", 725, 480);
 context.fillText("Mage", 250, 480);
+
 
 //White Dot
 context.beginPath();
@@ -27,19 +31,32 @@ context.strokeRect(225,470,1,1);
 context.stroke();
 
 var classChosen = 1;
-var userName = "";
+
+
 
 document.addEventListener("keydown", function(e) {
+
 	if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
         e.preventDefault();
     }
     if(!classPicked) {
     	chooseClass(e);
     }
+
 });
 
+
+
+//clearBox();
+
+
 function chooseClass(e) {
+
+
 	var userInput = e.keyCode;
+
+	//Begin Idea 1 Below VV
+	//console.log(userInput);
 
 	if(userInput == 37) {
 
@@ -49,6 +66,7 @@ function chooseClass(e) {
 		context.strokeStyle="white";
 		context.strokeRect(225,470,1,1);
 		context.stroke();
+
 
 		//Remove other White Dot
 		context.beginPath();
@@ -81,7 +99,7 @@ function chooseClass(e) {
 		askName();
 	}
 }
-
+var userName = "";
 function askName(e) {
 	var nameChosen = false;
 	// var userInput = e.keyCode;
@@ -93,8 +111,12 @@ function askName(e) {
 		if([32, 37, 38, 39, 40].indexOf(x.keyCode) > -1) {
 	        x.preventDefault();
 	    }
-	    if(!nameChosen) {
-	    	chooseName(x);
+	    if(x.keyCode !== 13) {
+	    	userName += String.fromCharCode(x.keyCode);
+	    	userName = userName.toLowerCase();
+	    }
+	    else {
+	    	beginExposition();
 	    }
 	});
 }
@@ -113,16 +135,7 @@ function clearScreen() {
 	context.fillStyle="white";
 }
 
-function chooseName(x) {
-	var userInput = x.keyCode;
-	if(userInput == 13) {
-		userName = $("#mainTextBox").val();
-		clearScreen();
-		$("#mainTextBox").val("");
-		nameChosen = true;
-		beginExposition();
-	}
-}
+
 
 function beginExposition() {
 	
@@ -143,60 +156,86 @@ function beginExposition() {
 	beginGame();
 }
 
-var x           = 700,      //Initialize X starting position
-    velX        = 0,        //Initialize x starting speed ( i think?)
-    speed       = 2,
-    friction    = 0.4;
+var x = 700, //Initialize X starting position
+    velX = 0, //Initialize x starting speed ( i think?)
+    speed = 2,
+    friction = 0.4;
 
 function beginGame() {
 	document.addEventListener("keydown", function(y) {
+		//console.log(y);
 		if([32, 37, 38, 39, 40].indexOf(y.keyCode) > -1) {
 	        y.preventDefault();
 	    }
 	    var userInput = y.keyCode;
-		if(userInput == 13) {
+		if(userInput === 13) {
 			clearBox();
-			moveEnemies(userInput);
+			moveEnemies();
 		}
+		if(userInput === enemyOne.charCodeAt(0)) {
+
+			enemyOne = enemyOne.slice(1);
+			
+			if(enemyOne === "") {
+				enemiesDefeated();
+			}
+
+		}
+
 	});
+
+
 }
 
 function drawCharacter() {
-	var smiley = document.getElementById("smiley");
+	var smiley = document.getElementById("character");
 	context.drawImage(smiley, 10, 10);
 }
+
+
+
 
 var fruitDefeated = false;
 var enemyOne = "fruit";
 
-function moveEnemies(userInput) {
-	if(!fruitDefeated) {
-		if(userInput == enemyOne.charCodeAt(0)) {
-			enemyOne = enemyOne.slice(1);
-			if(!enemyOne) {
-				fruitDefeated = true;
-			}
-		}
-	    velX = velX * friction;     //Controls speed
-	    x   += velX;                //changes the value of x
+function moveEnemies() {
+	// document.addEventListener("keydown", function(z) {
+	// 	//console.log(y);
+	// 	if([32, 37, 38, 39, 40].indexOf(z.keyCode) > -1) {
+	//         z.preventDefault();
+	//     }
+	//     var userInput = z.keyCode;
+	// 	if(userInput === enemyOne.charCodeAt(0)) {
 
-	    if (x <= 5) {               //Make sure X doesn't go off the side
-	        x = 5;
-	    }
+	// 		enemyOne = enemyOne.slice(1);
 
-	    velX--;
-	    clearScreen();
-	    context.beginPath();
-	    context.fillStyle = "white";
-	    drawCharacter();
-	    context.fillText(enemyOne, (x - 5), 225);
-	    context.strokeRect(x,250,1,1);
-	    context.stroke();
+	// 		if(enemyOne === "") {
+	// 			enemiesDefeated();
+	// 		}
 
-	    setTimeout(moveEnemies, 10);
-	}
+	// 	}
+	// });
+
+    velX = velX * friction; //Controls speed
+    x   += velX;            //changes the value of x
+
+    if (x <= 5) { 			//Make sure X doesn't go off the side
+        x = 5;
+    }
+    velX--;
+    clearScreen();
+    context.beginPath();
+    context.fillStyle = "white";
+    drawCharacter();
+    context.fillText(enemyOne, (x - 5), 225);
+    context.strokeRect(x,250,1,1);
+    context.stroke();
+
+    setTimeout(moveEnemies, 10);
+	
 }
 
 function enemiesDefeated() {
 		context.fillText("Test", 80 , 450);
+
 }
