@@ -162,6 +162,10 @@ function beginExposition() {
 	beginGame();
 }
 
+var x = 700, //Initialize X starting position
+    velX = 0, //Initialize x starting speed ( i think?)
+    speed = 2,
+    friction = 0.4;
 
 function beginGame() {
 	document.addEventListener("keydown", function(y) {
@@ -172,7 +176,8 @@ function beginGame() {
 	    var userInput = y.keyCode;
 		if(userInput == 13) {
 			clearBox();
-			moveEnemies();
+			moveEnemies(userInput);
+
 		}
 	});
 
@@ -184,28 +189,42 @@ function drawCharacter() {
 	context.drawImage(smiley, 10, 10);
 }
 
-var x = 700, //Initialize X starting position
-    velX = 0, //Initialize x starting speed ( i think?)
-    speed = 2,
-    friction = 0.4;
 
 
-function moveEnemies() {
 
-    velX = velX * friction; //Controls speed
-    x += velX;//changes the value of x
+var fruitDefeated = false;
+var yummyYummy = "fruit";
 
-    if (x <= 5) { //Make sure X doesn't go off the side
-        x = 5;
-    }
+function moveEnemies(userInput) {
+	if(!fruitDefeated) {
+		if(userInput == yummyYummy.charCodeAt(0)) {
+			yummyYummy = yummyYummy.slice(1);
+			if(!yummyYummy) {
+				fruitDefeated = true;
+			}
 
-    velX--;
-    clearScreen();
-    context.beginPath();
-    context.fillStyle = "white";
-    context.strokeRect(x,250,1,1);
-    context.stroke();
+		}
+	    velX = velX * friction; //Controls speed
+	    x += velX;//changes the value of x
 
-    setTimeout(moveEnemies, 10);
+	    if (x <= 5) { //Make sure X doesn't go off the side
+	        x = 5;
+	    }
+
+	    velX--;
+	    clearScreen();
+	    context.beginPath();
+	    context.fillStyle = "white";
+	    drawCharacter();
+	    context.fillText(yummyYummy, (x - 5), 225);
+	    context.strokeRect(x,250,1,1);
+	    context.stroke();
+
+	    setTimeout(moveEnemies, 10);
+	}
+}
+
+function enemiesDefeated() {
+		context.fillText("Test", 80 , 450);
 
 }
