@@ -13,15 +13,11 @@ context.strokeStyle="white";
 context.strokeRect(50,400,962,135);
 context.stroke();
 
-
-
 context.font = "30px Arial";
 context.fillStyle = "white";
-//context.textAlign = "center";
 context.fillText("Choose a Class", 425, 100);
 context.fillText("Warrior", 725, 480);
 context.fillText("Mage", 250, 480);
-
 
 //White Dot
 context.beginPath();
@@ -31,32 +27,19 @@ context.strokeRect(225,470,1,1);
 context.stroke();
 
 var classChosen = 1;
-
 var userName = "";
 
 document.addEventListener("keydown", function(e) {
-
 	if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
         e.preventDefault();
     }
     if(!classPicked) {
     	chooseClass(e);
     }
-
 });
 
-
-
-//clearBox();
-
-
 function chooseClass(e) {
-
-
 	var userInput = e.keyCode;
-
-	//Begin Idea 1 Below VV
-	//console.log(userInput);
 
 	if(userInput == 37) {
 
@@ -66,7 +49,6 @@ function chooseClass(e) {
 		context.strokeStyle="white";
 		context.strokeRect(225,470,1,1);
 		context.stroke();
-
 
 		//Remove other White Dot
 		context.beginPath();
@@ -114,7 +96,6 @@ function askName(e) {
 	    if(!nameChosen) {
 	    	chooseName(x);
 	    }
-
 	});
 }
 
@@ -140,7 +121,6 @@ function chooseName(x) {
 		$("#mainTextBox").val("");
 		nameChosen = true;
 		beginExposition();
-
 	}
 }
 
@@ -163,14 +143,13 @@ function beginExposition() {
 	beginGame();
 }
 
-var x = 700, //Initialize X starting position
-    velX = 0, //Initialize x starting speed ( i think?)
-    speed = 2,
-    friction = 0.4;
+var x           = 700,      //Initialize X starting position
+    velX        = 0,        //Initialize x starting speed ( i think?)
+    speed       = 2,
+    friction    = 0.4;
 
 function beginGame() {
 	document.addEventListener("keydown", function(y) {
-		//console.log(y);
 		if([32, 37, 38, 39, 40].indexOf(y.keyCode) > -1) {
 	        y.preventDefault();
 	    }
@@ -178,11 +157,8 @@ function beginGame() {
 		if(userInput == 13) {
 			clearBox();
 			moveEnemies(userInput);
-
 		}
 	});
-
-
 }
 
 function drawCharacter() {
@@ -190,26 +166,21 @@ function drawCharacter() {
 	context.drawImage(smiley, 10, 10);
 }
 
-
-
-
 var fruitDefeated = false;
 var enemyOne = "fruit";
 
 function moveEnemies(userInput) {
 	if(!fruitDefeated) {
-		//console.log(userInput);
 		if(userInput == enemyOne.charCodeAt(0)) {
 			enemyOne = enemyOne.slice(1);
 			if(!enemyOne) {
 				fruitDefeated = true;
 			}
-
 		}
-	    velX = velX * friction; //Controls speed
-	    x += velX;//changes the value of x
+	    velX = velX * friction;     //Controls speed
+	    x   += velX;                //changes the value of x
 
-	    if (x <= 5) { //Make sure X doesn't go off the side
+	    if (x <= 5) {               //Make sure X doesn't go off the side
 	        x = 5;
 	    }
 
@@ -228,5 +199,4 @@ function moveEnemies(userInput) {
 
 function enemiesDefeated() {
 		context.fillText("Test", 80 , 450);
-
 }
