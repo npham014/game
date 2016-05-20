@@ -138,6 +138,7 @@ function clearScreen() {
 
 
 function beginExposition() {
+	clearScreen();
 	
 	drawCharacter();
 	context.font = "20px Arial";
@@ -159,11 +160,13 @@ function beginExposition() {
 var x = 700, //Initialize X starting position
     velX = 0, //Initialize x starting speed ( i think?)
     speed = 2,
-    friction = 0.4;
+    friction = 0.4,
+    keys = [];
 
 function beginGame() {
 	document.addEventListener("keydown", function(y) {
 		//console.log(y);
+		keys[y.keyCode] = true;
 		if([32, 37, 38, 39, 40].indexOf(y.keyCode) > -1) {
 	        y.preventDefault();
 	    }
@@ -172,15 +175,8 @@ function beginGame() {
 			clearBox();
 			moveEnemies();
 		}
-		if(userInput === enemyOne.charCodeAt(0)) {
-
-			enemyOne = enemyOne.slice(1);
-			
-			if(enemyOne === "") {
-				enemiesDefeated();
-			}
-
-		}
+			//userName += String.fromCharCode(x.keyCode);
+	    	//userName = userName.toLowerCase();
 
 	});
 
@@ -199,22 +195,41 @@ var fruitDefeated = false;
 var enemyOne = "fruit";
 
 function moveEnemies() {
-	// document.addEventListener("keydown", function(z) {
-	// 	//console.log(y);
-	// 	if([32, 37, 38, 39, 40].indexOf(z.keyCode) > -1) {
-	//         z.preventDefault();
-	//     }
-	//     var userInput = z.keyCode;
-	// 	if(userInput === enemyOne.charCodeAt(0)) {
-
-	// 		enemyOne = enemyOne.slice(1);
-
-	// 		if(enemyOne === "") {
-	// 			enemiesDefeated();
-	// 		}
-
+	// if(userInput === enemyOne.charCodeAt(0)) {
+	// 	enemyOne = enemyOne.slice(1);
+			
+	// 	if(enemyOne === "") {
+	// 		enemiesDefeated();
 	// 	}
-	// });
+
+	// }
+	var count = 5;
+
+	if(keys[70] && count == 5) {
+		enemyOne = enemyOne.slice(1);
+		count--;
+	}
+
+	if(keys[82] && count == 4) {
+		enemyOne = enemyOne.slice(1);
+		count--;
+	}
+
+	if(keys[85] && count == 3) {
+		enemyOne = enemyOne.slice(1);
+		count--;
+	}
+	if(keys[73] && count == 2) {
+		enemyOne = enemyOne.slice(1);
+		count--;
+	}
+	if(keys[84] && count == 1) {
+		enemyOne = enemyOne.slice(1);
+		count--;
+	}
+	if(count == 0) {
+		enemiesDefeated();
+	}
 
     velX = velX * friction; //Controls speed
     x   += velX;            //changes the value of x
@@ -236,6 +251,6 @@ function moveEnemies() {
 }
 
 function enemiesDefeated() {
-		context.fillText("Test", 80 , 450);
+		context.fillText(enemyOne, 80 , 450);
 
 }
