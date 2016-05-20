@@ -35,7 +35,7 @@ var classChosen = 1;
 var userName = "";
 
 document.addEventListener("keydown", function(e) {
-	console.log(e);
+
 	if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
         e.preventDefault();
     }
@@ -107,7 +107,7 @@ function askName(e) {
 	context.fillText("Enter your name", 425, 100);
 
 	document.addEventListener("keydown", function(x) {
-		console.log(x);
+		//console.log(x);
 		if([32, 37, 38, 39, 40].indexOf(x.keyCode) > -1) {
 	        x.preventDefault();
 	    }
@@ -129,6 +129,7 @@ function clearScreen() {
 	context.beginPath();
 	context.fillStyle="black";
 	context.fillRect(0,0,1062, 390);
+	context.fillStyle="white";
 }
 
 function chooseName(x) {
@@ -169,7 +170,7 @@ var x = 700, //Initialize X starting position
 
 function beginGame() {
 	document.addEventListener("keydown", function(y) {
-		console.log(y);
+		//console.log(y);
 		if([32, 37, 38, 39, 40].indexOf(y.keyCode) > -1) {
 	        y.preventDefault();
 	    }
@@ -193,13 +194,14 @@ function drawCharacter() {
 
 
 var fruitDefeated = false;
-var yummyYummy = "fruit";
+var enemyOne = "fruit";
 
 function moveEnemies(userInput) {
 	if(!fruitDefeated) {
-		if(userInput == yummyYummy.charCodeAt(0)) {
-			yummyYummy = yummyYummy.slice(1);
-			if(!yummyYummy) {
+		//console.log(userInput);
+		if(userInput == enemyOne.charCodeAt(0)) {
+			enemyOne = enemyOne.slice(1);
+			if(!enemyOne) {
 				fruitDefeated = true;
 			}
 
@@ -216,7 +218,7 @@ function moveEnemies(userInput) {
 	    context.beginPath();
 	    context.fillStyle = "white";
 	    drawCharacter();
-	    context.fillText(yummyYummy, (x - 5), 225);
+	    context.fillText(enemyOne, (x - 5), 225);
 	    context.strokeRect(x,250,1,1);
 	    context.stroke();
 
