@@ -13,15 +13,12 @@ context.strokeStyle="white";
 context.strokeRect(50,400,962,135);
 context.stroke();
 
-
-
 context.font = "30px Arial";
 context.fillStyle = "white";
 //context.textAlign = "center";
 context.fillText("Choose a Class", 425, 100);
 context.fillText("Warrior", 725, 480);
 context.fillText("Mage", 250, 480);
-
 
 //White Dot
 context.beginPath();
@@ -31,8 +28,6 @@ context.strokeRect(225,470,1,1);
 context.stroke();
 
 var classChosen = 1;
-
-
 
 document.addEventListener("keydown", function(e) {
 
@@ -45,19 +40,9 @@ document.addEventListener("keydown", function(e) {
 
 });
 
-
-
-//clearBox();
-
-
 function chooseClass(e) {
 
-
 	var userInput = e.keyCode;
-
-	//Begin Idea 1 Below VV
-	//console.log(userInput);
-
 	if(userInput == 37) {
 
 		//Create White Dot
@@ -99,6 +84,7 @@ function chooseClass(e) {
 		askName();
 	}
 }
+
 var userName = "";
 function askName(e) {
 	var nameChosen = false;
@@ -121,7 +107,6 @@ function askName(e) {
 	});
 }
 
-
 function clearBox() {
 	context.beginPath();
 	context.fillStyle="black";
@@ -135,11 +120,9 @@ function clearScreen() {
 	context.fillStyle="white";
 }
 
-
-
 function beginExposition() {
 	clearScreen();
-	
+
 	drawCharacter();
 	context.font = "20px Arial";
 	context.fillStyle="white";
@@ -163,6 +146,9 @@ var x = 700, //Initialize X starting position
     friction = 0.4,
     keys = [];
 
+var lastkey = "";
+var playing = false;
+
 function beginGame() {
 	document.addEventListener("keydown", function(y) {
 		//console.log(y);
@@ -174,15 +160,10 @@ function beginGame() {
 		if(userInput === 13) {
 			clearBox();
 			moveEnemies();
-
+			playing = true;
 		}
-		enemiesDefeated();
-			//userName += String.fromCharCode(x.keyCode);
-	    	//userName = userName.toLowerCase();
-
+		lastkey = String.fromCharCode(userInput).toLowerCase()
 	});
-
-
 }
 
 function drawCharacter() {
@@ -190,54 +171,21 @@ function drawCharacter() {
 	context.drawImage(smiley, 10, 10);
 }
 
-
-
-
 var fruitDefeated = false;
 var enemyOne = "fruit";
+var score = 0;
 
 function moveEnemies() {
-	// if(userInput === enemyOne.charCodeAt(0)) {
-	// 	enemyOne = enemyOne.slice(1);
-			
-	// 	if(enemyOne === "") {
-	// 		enemiesDefeated();
-	// 	}
 
-	// }
-	var count = 5;
-
-	if(keys[70] && count == 5) {
-		//enemyOne = enemyOne.slice(1);
-		count--;		
+	if(lastkey === enemyOne[0] && playing) {
+		enemyOne = enemyOne.slice(1);
+		score += 50;
 	}
 
-	if(keys[82] && count == 4) {
-		//enemyOne = enemyOne.slice(1);
-		count--;
-	}
+    velX = velX * friction; 	//Controls speed
+    x   += velX;           		//changes the value of x
 
-	if(keys[85] && count == 3) {
-		//enemyOne = enemyOne.slice(1);
-		count--;
-	}
-	if(keys[73] && count == 2) {
-		//enemyOne = enemyOne.slice(1);
-		count--;
-	}
-	if(keys[84] && count == 1) {
-		//enemyOne = enemyOne.slice(1);
-		count--;
-	}
-	if(count == 0) {
-		clearScreen();
-		return;
-	}
-
-    velX = velX * friction; //Controls speed
-    x   += velX;            //changes the value of x
-
-    if (x <= 5) { 			//Make sure X doesn't go off the side
+    if (x <= 5) { 				//Make sure X doesn't go off the side
         x = 5;
     }
     velX--;
@@ -249,14 +197,16 @@ function moveEnemies() {
     context.strokeRect(x,250,1,1);
     context.stroke();
 
-    if(count > 0) {
+    if(enemyOne.length > 0) {
     	setTimeout(moveEnemies, 10);
+	} else {
+		enemiesDefeated();
 	}
+	lastkey = "";
 }
 
 function enemiesDefeated() {
-		context.fillText(enemyOne, 80 , 450);
 		clearScreen();
 		drawCharacter();
-
+		console.log(score);
 }
