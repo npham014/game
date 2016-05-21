@@ -174,7 +174,9 @@ function beginGame() {
 		if(userInput === 13) {
 			clearBox();
 			moveEnemies();
+
 		}
+		enemiesDefeated();
 			//userName += String.fromCharCode(x.keyCode);
 	    	//userName = userName.toLowerCase();
 
@@ -206,29 +208,30 @@ function moveEnemies() {
 	var count = 5;
 
 	if(keys[70] && count == 5) {
-		enemyOne = enemyOne.slice(1);
-		count--;
+		//enemyOne = enemyOne.slice(1);
+		count--;		
 	}
 
 	if(keys[82] && count == 4) {
-		enemyOne = enemyOne.slice(1);
+		//enemyOne = enemyOne.slice(1);
 		count--;
 	}
 
 	if(keys[85] && count == 3) {
-		enemyOne = enemyOne.slice(1);
+		//enemyOne = enemyOne.slice(1);
 		count--;
 	}
 	if(keys[73] && count == 2) {
-		enemyOne = enemyOne.slice(1);
+		//enemyOne = enemyOne.slice(1);
 		count--;
 	}
 	if(keys[84] && count == 1) {
-		enemyOne = enemyOne.slice(1);
+		//enemyOne = enemyOne.slice(1);
 		count--;
 	}
 	if(count == 0) {
-		enemiesDefeated();
+		clearScreen();
+		return;
 	}
 
     velX = velX * friction; //Controls speed
@@ -246,11 +249,14 @@ function moveEnemies() {
     context.strokeRect(x,250,1,1);
     context.stroke();
 
-    setTimeout(moveEnemies, 10);
-	
+    if(count > 0) {
+    	setTimeout(moveEnemies, 10);
+	}
 }
 
 function enemiesDefeated() {
 		context.fillText(enemyOne, 80 , 450);
+		clearScreen();
+		drawCharacter();
 
 }
